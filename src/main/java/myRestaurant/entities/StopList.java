@@ -1,4 +1,4 @@
-package restaurant.entities;
+package myRestaurant.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,4 +17,6 @@ public class StopList {
     @SequenceGenerator(name = "stopList_gen", sequenceName = "stopList_seq", allocationSize = 1, initialValue = 1)
     Long id;
     String name;
+    @OneToOne(mappedBy = "stopList")
+    MenuItem menuItem;
 }

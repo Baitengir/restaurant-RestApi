@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: restaurant-RestApi
+  datasource:
+    username: postgres
+    password: busubaha
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8081

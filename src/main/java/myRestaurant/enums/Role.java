@@ -1,4 +1,4 @@
-package restaurant.enums;
+package myRestaurant.enums;
 
 public enum Role {
     ADMIN,

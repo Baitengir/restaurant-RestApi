@@ -1,8 +1,10 @@
-package restaurant.entities;
+package myRestaurant.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Table(name = "menu_items")
@@ -21,4 +23,13 @@ public class MenuItem {
     int price;
     String description;
     boolean isVegetarian;
+    @ManyToMany (mappedBy = "menuItems")
+    List<Cheque> cheques;
+    @ManyToOne
+    SubCategory subCategory;
+    @OneToOne
+    StopList stopList;
+    @ManyToOne
+    Restaurant restaurant;
+
 }

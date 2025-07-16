@@ -1,8 +1,10 @@
-package restaurant.entities;
+package myRestaurant.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Table(name = "sub_categories")
@@ -17,4 +19,8 @@ public class SubCategory {
     @SequenceGenerator(name = "subCategory_gen", sequenceName = "subCategory_seq", allocationSize = 1, initialValue = 1)
     Long id;
     String name;
+    @ManyToOne
+    Category category;
+    @OneToMany(mappedBy = "subCategory")
+    List<MenuItem> menuItems;
 }

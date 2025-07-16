@@ -1,9 +1,9 @@
-package restaurant.entities;
+package myRestaurant.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import restaurant.enums.RestaurantType;
+import myRestaurant.enums.RestaurantType;
 
 import java.util.List;
 
@@ -21,9 +21,12 @@ public class Restaurant {
     Long id;
     String name;
     String location;
+    @Enumerated(EnumType.STRING)
     RestaurantType type;
-    int numberOfEmployees;
+    int numberOfEmployees = 0;
     int service;
     @OneToMany (mappedBy = "restaurant")
     List<User> users;
+    @OneToMany (mappedBy = "restaurant")
+    List<MenuItem> menuItems;
 }

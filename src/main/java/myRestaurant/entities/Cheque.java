@@ -1,10 +1,11 @@
-package restaurant.entities;
+package myRestaurant.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "cheques")
@@ -20,7 +21,9 @@ public class Cheque {
     Long id;
     double priceAverage;
     LocalDate date;
-
-//    Cheque cheque;
+    @ManyToOne
+    User user;
+    @ManyToMany
+    List<MenuItem> menuItems;
 
 }

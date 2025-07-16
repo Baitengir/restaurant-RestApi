@@ -1,9 +1,9 @@
-package restaurant.entities;
+package myRestaurant.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import restaurant.enums.Role;
+import myRestaurant.enums.Role;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -29,6 +29,6 @@ public class User {
     int experience;
     @ManyToOne
     Restaurant restaurant;
-    @OneToMany
+    @OneToMany (mappedBy = "user")
     List<Cheque> cheques;
 }
