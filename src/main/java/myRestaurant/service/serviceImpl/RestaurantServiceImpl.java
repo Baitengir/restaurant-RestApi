@@ -76,6 +76,16 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public SimpleResponse deleteById(Long id) {
-        return null;
+        Restaurant restaurant = restaurantRepo.findById(id).orElseThrow(
+                () -> new NullPointerException(String.format("Restaurant with id %s not found", id))
+        );
+
+        restaurant.getUsers().size();
+        restaurant.getMenuItems().size();
+        restaurantRepo.delete(restaurant);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Restaurant deleted")
+                .build();
     }
 }

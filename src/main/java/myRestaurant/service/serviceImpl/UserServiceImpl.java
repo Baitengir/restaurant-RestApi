@@ -34,6 +34,12 @@ public class UserServiceImpl implements UserService {
             Restaurant restaurant = restaurantRepo.findById(restaurantId).orElseThrow(
                     () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found")
             );
+            if (restaurant.getNumberOfEmployees() >= 15){
+                return SimpleResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST)
+                        .message("Maximum number of employees in restaurant (15)")
+                        .build();
+            }
             restaurant.setNumberOfEmployees(restaurant.getNumberOfEmployees() + 1);
 
             User user = User.builder()
@@ -108,6 +114,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SimpleResponse deleteById(Long id) {
-        return null;
+        User user = userRepo.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+        );
+        user.setRestaurant(null);
+        user.getCheques().clear();
+        userRepo.delete(user);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("user deleted")
+                .build();
     }
 }

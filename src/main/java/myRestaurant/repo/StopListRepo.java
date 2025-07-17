@@ -22,7 +22,7 @@ public interface StopListRepo extends JpaRepository<StopList, Long> {
 
     @Query("""
             select new myRestaurant.dto.stopListDto.response.StopListResponse(
-                        id, name, date
+                        id, reason, date
                         )
             from StopList
             """)

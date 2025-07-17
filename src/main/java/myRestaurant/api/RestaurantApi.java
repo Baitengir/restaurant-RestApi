@@ -37,5 +37,10 @@ public class RestaurantApi {
         return restaurantService.updateById(id, restaurantRequestUpdate);
     }
 
+    @DeleteMapping("/{id}")
+    public SimpleResponse delete (@PathVariable Long id) {
+        return restaurantService.deleteById(id);
+    }
+
 
 }

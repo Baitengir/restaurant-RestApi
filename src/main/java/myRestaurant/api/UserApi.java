@@ -40,4 +40,9 @@ public class UserApi {
                                          @RequestBody UserRequest userRequest) {
         return userService.updateById(id, userRequest);
     }
+
+    @DeleteMapping("/{id}")
+    public SimpleResponse delete (@PathVariable Long id) {
+        return userService.deleteById(id);
+    }
 }

@@ -18,7 +18,7 @@ public class StopList {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stopList_gen")
     @SequenceGenerator(name = "stopList_gen", sequenceName = "stopList_seq", allocationSize = 1, initialValue = 1)
     Long id;
-    String name;
+    String reason;
     @OneToOne
     MenuItem menuItem;
     LocalDate date;

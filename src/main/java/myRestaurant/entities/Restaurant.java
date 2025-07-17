@@ -25,8 +25,8 @@ public class Restaurant {
     RestaurantType type;
     int numberOfEmployees = 0;
     int service;
-    @OneToMany (mappedBy = "restaurant")
+    @OneToMany (mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<User> users = new ArrayList<>();
-    @OneToMany (mappedBy = "restaurant")
+    @OneToMany (mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<MenuItem> menuItems = new ArrayList<>();
 }

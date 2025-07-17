@@ -28,8 +28,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     Role role;
     int experience;
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.DETACH)
     Restaurant restaurant;
-    @OneToMany (mappedBy = "user")
+    @OneToMany (mappedBy = "user", cascade = CascadeType.DETACH)
     List<Cheque> cheques;
 }

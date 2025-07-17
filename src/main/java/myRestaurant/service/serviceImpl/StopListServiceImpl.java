@@ -53,7 +53,7 @@ public class StopListServiceImpl implements StopListService {
         }
 
         StopList stopList = StopList.builder()
-                .name(stopListRequest.name())
+                .reason(stopListRequest.name())
                 .menuItem(menuItem)
                 .date(LocalDate.now())
                 .build();
@@ -73,7 +73,7 @@ public class StopListServiceImpl implements StopListService {
 
         return StopListResponse.builder()
                 .id(stopList.getId())
-                .name(stopList.getName())
+                .name(stopList.getReason())
                 .date(stopList.getDate())
                 .build();
     }
@@ -89,7 +89,7 @@ public class StopListServiceImpl implements StopListService {
                 () -> new NullPointerException(String.format("StopList with id %s not found", id))
         );
 
-        stopList.setName(stopListRequest.name());
+        stopList.setReason(stopListRequest.name());
         stopListRepo.save(stopList);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
