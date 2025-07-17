@@ -7,7 +7,7 @@ import myRestaurant.dto.userDto.response.UserResponse;
 import java.util.List;
 
 public interface UserService {
-    SimpleResponse save (UserRequest userRequest);
+    SimpleResponse save (Long userId, UserRequest userRequest, Long restaurantId);
     UserResponse getById(Long id);
     List<UserResponse> getAllUsers();
     SimpleResponse updateById(Long id, UserRequest userRequest);

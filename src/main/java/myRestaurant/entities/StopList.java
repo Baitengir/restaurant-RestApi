@@ -3,6 +3,8 @@ package myRestaurant.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "stop_lists")
@@ -17,6 +19,7 @@ public class StopList {
     @SequenceGenerator(name = "stopList_gen", sequenceName = "stopList_seq", allocationSize = 1, initialValue = 1)
     Long id;
     String name;
-    @OneToOne(mappedBy = "stopList")
+    @OneToOne
     MenuItem menuItem;
+    LocalDate date;
 }

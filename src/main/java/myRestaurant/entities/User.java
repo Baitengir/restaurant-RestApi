@@ -25,6 +25,7 @@ public class User {
     String email;
     String password;
     String phone;
+    @Enumerated(EnumType.STRING)
     Role role;
     int experience;
     @ManyToOne

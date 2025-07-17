@@ -27,7 +27,7 @@ public class MenuItem {
     List<Cheque> cheques;
     @ManyToOne
     SubCategory subCategory;
-    @OneToOne
+    @OneToOne (mappedBy = "menuItem")
     StopList stopList;
     @ManyToOne
     Restaurant restaurant;

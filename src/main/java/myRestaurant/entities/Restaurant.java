@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import myRestaurant.enums.RestaurantType;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,7 +26,7 @@ public class Restaurant {
     int numberOfEmployees = 0;
     int service;
     @OneToMany (mappedBy = "restaurant")
-    List<User> users;
+    List<User> users = new ArrayList<>();
     @OneToMany (mappedBy = "restaurant")
-    List<MenuItem> menuItems;
+    List<MenuItem> menuItems = new ArrayList<>();
 }

@@ -14,5 +14,4 @@ import org.springframework.http.HttpStatus;
 public class SimpleResponse {
     HttpStatus httpStatus;
     String message;
-
 }

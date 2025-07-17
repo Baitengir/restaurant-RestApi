@@ -16,8 +16,13 @@ public class UserApi {
     public final UserService userService;
 
     @PostMapping
-    public SimpleResponse saveUser(@RequestBody UserRequest userRequest) {
-        return userService.save(userRequest);
+    public SimpleResponse saveUser(
+            @RequestParam Long userId,
+            @RequestParam Long restaurantId,
+            @RequestBody UserRequest userRequest
+    )
+    {
+        return userService.save(userId, userRequest, restaurantId);
     }
 
     @GetMapping("/{id}")

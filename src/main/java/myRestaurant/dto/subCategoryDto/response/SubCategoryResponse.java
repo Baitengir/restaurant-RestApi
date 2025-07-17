@@ -1,11 +1,11 @@
-package myRestaurant.dto.categoryDto.response;
+package myRestaurant.dto.subCategoryDto.response;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
-public class CategoryResponse {
+public class SubCategoryResponse {
     Long id;
     String name;
 }
