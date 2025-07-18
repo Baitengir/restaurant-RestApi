@@ -1,6 +1,9 @@
 package myRestaurant.dto.chequeDto.request;
 
-public record ChequeRequest (
+import java.util.List;
 
+public record ChequeRequest (
+        Long userId,
+        List<Long> menuItemIds
 ){
 }

@@ -3,8 +3,8 @@ package myRestaurant.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,9 +21,24 @@ public class Cheque {
     Long id;
     double priceAverage;
     LocalDateTime createdAt;
-    @ManyToOne
+    int service;
+    @ManyToOne (cascade = CascadeType.DETACH)
     User user;
-    @ManyToMany
-    List<MenuItem> menuItems;
+    int grandTotal;
+    @ManyToMany (cascade = CascadeType.DETACH)
+    List<MenuItem> menuItems = new ArrayList<>();
 
+    public Cheque(Long id, double priceAverage, LocalDateTime createdAt, int service, int grandTotal, List<MenuItem> menuItems) {
+        this.id = id;
+        this.priceAverage = priceAverage;
+        this.createdAt = createdAt;
+        this.service = service;
+        this.grandTotal = grandTotal;
+        this.menuItems = menuItems;
+    }
 }
+//Waiter’s fullName
+//List<MenuItem>items
+//Avarage price
+//Service %
+//Grand total
