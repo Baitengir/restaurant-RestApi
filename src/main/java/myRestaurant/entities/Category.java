@@ -20,6 +20,6 @@ public class Category {
     @SequenceGenerator(name = "category_gen", sequenceName = "category_seq", allocationSize = 1, initialValue = 1)
     Long id;
     String name;
-    @OneToMany (mappedBy = "category")
+    @OneToMany (mappedBy = "category", cascade = CascadeType.REMOVE)
     List<SubCategory> subCategories = new ArrayList<>();
 }

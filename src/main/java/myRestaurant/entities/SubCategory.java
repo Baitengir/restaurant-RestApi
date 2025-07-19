@@ -21,6 +21,6 @@ public class SubCategory {
     String name;
     @ManyToOne
     Category category;
-    @OneToMany(mappedBy = "subCategory")
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.REMOVE)
     List<MenuItem> menuItems;
 }

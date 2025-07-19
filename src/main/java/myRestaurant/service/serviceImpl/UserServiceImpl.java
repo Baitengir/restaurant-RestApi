@@ -12,6 +12,7 @@ import myRestaurant.entities.User;
 import myRestaurant.repo.RestaurantRepo;
 import myRestaurant.repo.UserRepo;
 import myRestaurant.service.UserService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -113,12 +114,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public SimpleResponse deleteById(Long id) {
         User user = userRepo.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
         );
         user.setRestaurant(null);
-        user.getCheques().clear();
+        user.getCheques().forEach(cheque -> cheque.setUser(null));
+
         userRepo.delete(user);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)

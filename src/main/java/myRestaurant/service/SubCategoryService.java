@@ -11,4 +11,5 @@ public interface SubCategoryService {
     List<SubCategoryResponse> getAll ();
     SimpleResponse updateById(Long id, SubCategoryRequest subCategoryRequest);
     SimpleResponse deleteById(Long id);
+    List<SubCategoryResponse> getAllByCategoryId(Long id); // todo sort by name
 }

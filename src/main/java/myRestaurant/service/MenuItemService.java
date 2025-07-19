@@ -1,6 +1,7 @@
 package myRestaurant.service;
 
 import myRestaurant.dto.SimpleResponse;
+import myRestaurant.dto.categoryDto.response.CategoryResponse;
 import myRestaurant.dto.menuItemDto.request.MenuItemRequest;
 import myRestaurant.dto.menuItemDto.response.MenuItemResponse;
 
@@ -12,4 +13,8 @@ public interface MenuItemService {
     List<MenuItemResponse> getAll ();
     SimpleResponse updateById (Long id, MenuItemRequest menuItemRequest);
     SimpleResponse deleteById(Long id);
+    List<CategoryResponse> globalSearch(String keyword);
+    List<MenuItemResponse> sortByPrice(Long restaurantId, String ascOrDesc);
+    List<MenuItemResponse> getAllVegetarianFood(Long restaurantId);
+
 }

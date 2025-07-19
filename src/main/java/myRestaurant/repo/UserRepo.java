@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import myRestaurant.dto.userDto.response.UserResponse;
 import myRestaurant.entities.User;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
@@ -27,4 +27,8 @@ public interface UserRepo extends JpaRepository<User, Long> {
             from User
             """)
     public List<UserResponse> getAllUsers();
+
+    Optional<User> findByEmail(String username);
+
+
 }

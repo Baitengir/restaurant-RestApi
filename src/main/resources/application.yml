@@ -11,3 +11,7 @@ spring:
     show-sql: true
 server:
   port: 8081
+
+security:
+  secret:
+    key: java17java17java17theBest

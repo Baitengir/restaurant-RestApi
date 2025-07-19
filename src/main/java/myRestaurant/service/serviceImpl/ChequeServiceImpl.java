@@ -15,6 +15,7 @@ import myRestaurant.repo.UserRepo;
 import myRestaurant.service.ChequeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -117,7 +118,6 @@ public class ChequeServiceImpl implements ChequeService {
                 () -> new NullPointerException(String.format("User with id %s not found", chequeRequestUpdate.userId()))
         );
 
-
         Cheque cheque = chequeRepo.findById(id).orElseThrow(
                 () -> new NullPointerException(String.format("Cheque with id %s not found", id))
         );
@@ -131,6 +131,7 @@ public class ChequeServiceImpl implements ChequeService {
     }
 
     @Override
+    @Transactional
     public SimpleResponse delete(Long id, Long requestOwnerId) {
         User requestOwner = userRepo.findById(requestOwnerId).orElseThrow(
                 () -> new NullPointerException(String.format("User with id %s not found", requestOwnerId))

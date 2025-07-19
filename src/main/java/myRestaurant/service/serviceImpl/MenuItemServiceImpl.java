@@ -2,12 +2,10 @@ package myRestaurant.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import myRestaurant.dto.SimpleResponse;
+import myRestaurant.dto.categoryDto.response.CategoryResponse;
 import myRestaurant.dto.menuItemDto.request.MenuItemRequest;
 import myRestaurant.dto.menuItemDto.response.MenuItemResponse;
-import myRestaurant.entities.MenuItem;
-import myRestaurant.entities.Restaurant;
-import myRestaurant.entities.SubCategory;
-import myRestaurant.entities.User;
+import myRestaurant.entities.*;
 import myRestaurant.repo.MenuItemsRepo;
 import myRestaurant.repo.RestaurantRepo;
 import myRestaurant.repo.SubCategoryRepo;
@@ -16,6 +14,8 @@ import myRestaurant.service.MenuItemService;
 import myRestaurant.service.RestaurantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 import static myRestaurant.enums.Role.WAITER;
@@ -115,7 +115,38 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
+    @Transactional
     public SimpleResponse deleteById(Long id) {
-        return null;
+        MenuItem menuItem = menuItemsRepo.findById(id).orElseThrow(
+                () -> new NullPointerException(String.format("Menu item with id %s not found", id))
+        );
+        menuItem.setRestaurant(null);
+        menuItem.setStopList(null);
+        for (Cheque cheque : menuItem.getCheques()) {
+            cheque.getMenuItems().remove(menuItem);
+        }
+
+//        menuItem.getCheques().clear();
+        menuItemsRepo.delete(menuItem);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Menu item deleted")
+                .build();
+    }
+
+    @Override
+    public List<CategoryResponse> globalSearch(String keyword) {
+
+        return List.of();
+    }
+
+    @Override
+    public List<MenuItemResponse> sortByPrice(Long restaurantId, String ascOrDesc) {
+        return List.of();
+    }
+
+    @Override
+    public List<MenuItemResponse> getAllVegetarianFood(Long restaurantId) {
+        return List.of();
     }
 }

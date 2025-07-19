@@ -35,4 +35,9 @@ public class CategoryApi {
                                              @RequestBody CategoryRequest categoryRequest) {
         return categoryService.updateById(id, categoryRequest);
     }
+
+    @DeleteMapping("/{id}")
+    public SimpleResponse deleteById(@PathVariable Long id) {
+        return categoryService.delete(id);
+    }
 }

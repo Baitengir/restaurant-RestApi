@@ -18,4 +18,8 @@ public interface CategoryRepo extends JpaRepository<Category, Long> {
             from Category
             """)
     public List<CategoryResponse> getAll();
+
+
+
+
 }

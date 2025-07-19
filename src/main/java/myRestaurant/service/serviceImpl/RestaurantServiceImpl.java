@@ -1,6 +1,8 @@
 package myRestaurant.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import myRestaurant.entities.User;
+import myRestaurant.repo.UserRepo;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import myRestaurant.dto.SimpleResponse;
@@ -10,6 +12,7 @@ import myRestaurant.dto.restaurantDto.response.RestaurantResponse;
 import myRestaurant.entities.Restaurant;
 import myRestaurant.repo.RestaurantRepo;
 import myRestaurant.service.RestaurantService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepo restaurantRepo;
+    private final UserRepo userRepo;
 
     @Override
     public SimpleResponse save(RestaurantRequest restaurantRequest) {
@@ -75,13 +79,16 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Transactional
     public SimpleResponse deleteById(Long id) {
         Restaurant restaurant = restaurantRepo.findById(id).orElseThrow(
                 () -> new NullPointerException(String.format("Restaurant with id %s not found", id))
         );
 
-        restaurant.getUsers().size();
+
+        userRepo.deleteAll(restaurant.getUsers());
         restaurant.getMenuItems().size();
+
         restaurantRepo.delete(restaurant);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)

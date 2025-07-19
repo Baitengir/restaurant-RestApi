@@ -5,15 +5,14 @@ import lombok.Data;
 
 @Builder
 @Data
-public class SubCategoryResponse {
+public class SubCategoryResponseWithCatId {
     Long id;
     String name;
+    Long categoryId;
 
-    public SubCategoryResponse(Long id, String name) {
+    public SubCategoryResponseWithCatId(Long id, String name, Long categoryId) {
         this.id = id;
         this.name = name;
-    }
-
-    public SubCategoryResponse() {
+        this.categoryId = categoryId;
     }
 }
