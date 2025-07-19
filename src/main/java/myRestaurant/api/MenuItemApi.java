@@ -2,6 +2,7 @@ package myRestaurant.api;
 
 import lombok.RequiredArgsConstructor;
 import myRestaurant.dto.SimpleResponse;
+import myRestaurant.dto.categoryDto.response.CategoryResponse;
 import myRestaurant.dto.menuItemDto.request.MenuItemRequest;
 import myRestaurant.dto.menuItemDto.response.MenuItemResponse;
 import myRestaurant.service.MenuItemService;
@@ -44,5 +45,24 @@ public class MenuItemApi {
     ) {
         SimpleResponse response = menuItemService.updateById(id, menuItemRequest);
         return new ResponseEntity<>(response, response.getHttpStatus());
+    }
+
+    // 🔍 1. Global Search (поиск по имени)
+    @GetMapping("/search")
+    public List<MenuItemResponse> globalSearch(@RequestParam String keyword) {
+        return menuItemService.globalSearch(keyword);
+    }
+
+    // 🔼🔽 2. Сортировка по цене
+    @GetMapping("/sort")
+    public List<MenuItemResponse> sortByPrice(@RequestParam Long restaurantId,
+                                              @RequestParam(defaultValue = "asc") String ascOrDesc) {
+        return menuItemService.sortByPrice(restaurantId, ascOrDesc);
+    }
+
+    // 🥦 3. Только вегетарианские блюда
+    @GetMapping("/vegetarian")
+    public List<MenuItemResponse> getAllVegetarianFood(@RequestParam Long restaurantId) {
+        return menuItemService.getAllVegetarianFood(restaurantId);
     }
 }

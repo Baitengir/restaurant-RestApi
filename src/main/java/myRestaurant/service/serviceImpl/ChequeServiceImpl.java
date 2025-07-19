@@ -162,7 +162,7 @@ public class ChequeServiceImpl implements ChequeService {
     }
 
     @Override
-    public double getAvgPriceByRestaurantId(Long requestOwnerId, Long restaurantId, LocalDate localDate) {
+    public double getAvgPriceByRestaurantIdInTheDay(Long requestOwnerId, Long restaurantId, LocalDate localDate) {
         List<Cheque> cheques = chequeRepo.getAllChequesByRestaurantId(restaurantId);
         int sum = 0;
         int count = 0;
@@ -173,6 +173,22 @@ public class ChequeServiceImpl implements ChequeService {
             }
         }
         return (double) sum / count;
+    }
+
+    @Override
+    public double getTotalPriceByUserIdInTheDay(Long userId, LocalDate localDate) {
+        User user = userRepo.findById(userId).orElseThrow(
+                () -> new NullPointerException(String.format("User with id %s not found", userId))
+        );
+        int c = 0, res = 0;
+
+        for (Cheque cheque : user.getCheques()) {
+            if (cheque.getCreatedAt().toLocalDate().equals(localDate)) {
+                res = res + cheque.getGrandTotal();
+                c++;
+            }
+        }
+        return (double) res / c;
     }
 
 }

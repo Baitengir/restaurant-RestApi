@@ -1,0 +1,4 @@
+// delete methods
+// global search
+// sort any desk
+// total price check in the day by user id

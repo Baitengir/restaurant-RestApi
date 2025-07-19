@@ -1,6 +1,7 @@
 package myRestaurant.repo;
 
 import myRestaurant.dto.chequeDto.response.ChequeResponse;
+import myRestaurant.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import myRestaurant.entities.Cheque;
 import org.springframework.data.jpa.repository.Query;
@@ -41,4 +42,6 @@ public interface ChequeRepo extends JpaRepository<Cheque, Long> {
             where r.id = :restaurantId
             """, nativeQuery = true)
     List<Cheque> getAllChequesByRestaurantId(Long restaurantId);
+
+
 }

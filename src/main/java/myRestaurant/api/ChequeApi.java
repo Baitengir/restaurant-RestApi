@@ -56,6 +56,14 @@ public class ChequeApi {
     public double getAveragePriceByRestaurantId(@RequestParam Long requestOwnerId,
                                                 @RequestParam Long restaurantId,
                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return chequeService.getAvgPriceByRestaurantId(requestOwnerId, restaurantId, date);
+        return chequeService.getAvgPriceByRestaurantIdInTheDay(requestOwnerId, restaurantId, date);
+    }
+
+    @GetMapping("/total")
+    public double getTotalPriceByUserAndDate(
+            @RequestParam Long userId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+    ) {
+        return chequeService.getTotalPriceByUserIdInTheDay(userId, date);
     }
 }

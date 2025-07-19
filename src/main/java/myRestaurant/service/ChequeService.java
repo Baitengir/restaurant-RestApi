@@ -15,5 +15,6 @@ public interface ChequeService {
     SimpleResponse update (Long id, Long requestOwnerId, ChequeRequestUpdate chequeRequestUpdate);
     SimpleResponse delete (Long id, Long requestOwnerId);
     List<ChequeResponse> getAllChequesByUserId(Long userId);
-    double getAvgPriceByRestaurantId (Long requestOwnerId, Long restaurantId, LocalDate localDate);
+    double getAvgPriceByRestaurantIdInTheDay (Long requestOwnerId, Long restaurantId, LocalDate localDate);
+    double getTotalPriceByUserIdInTheDay (Long userId, LocalDate localDate);
 }
