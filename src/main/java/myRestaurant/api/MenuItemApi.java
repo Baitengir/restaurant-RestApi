@@ -47,6 +47,11 @@ public class MenuItemApi {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
+    @DeleteMapping("/{id}")
+    public SimpleResponse delete (@PathVariable Long id) {
+        return menuItemService.deleteById(id);
+    }
+
     // 🔍 1. Global Search (поиск по имени)
     @GetMapping("/search")
     public List<MenuItemResponse> globalSearch(@RequestParam String keyword) {

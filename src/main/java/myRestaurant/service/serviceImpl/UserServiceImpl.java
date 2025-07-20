@@ -1,6 +1,7 @@
 package myRestaurant.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import myRestaurant.entities.Cheque;
 import myRestaurant.entities.Restaurant;
 import myRestaurant.enums.Role;
 import org.springframework.http.HttpStatus;
@@ -119,8 +120,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepo.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
         );
+        Restaurant restaurant = user.getRestaurant();
+        List<User> users = restaurant.getUsers();
+        users.remove(user);
         user.setRestaurant(null);
-        user.getCheques().forEach(cheque -> cheque.setUser(null));
+
+        user.getCheques()
+                .forEach(cheque -> cheque.setUser(null));
 
         userRepo.delete(user);
         return SimpleResponse.builder()

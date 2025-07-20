@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -45,9 +46,7 @@ public class ChequeServiceImpl implements ChequeService {
                 () -> new NullPointerException(String.format("User with id %s not found", chequeRequest.userId()))
         );
 
-        int totalPrice = 0;
-        int restaurantService = 0;
-        int loopCount = 0;
+        int totalPrice = 0, restaurantService = 0, loopCount = 0;
 
         Cheque cheque = new Cheque();
 
@@ -67,6 +66,13 @@ public class ChequeServiceImpl implements ChequeService {
         cheque.setGrandTotal(totalPrice);
         cheque.setCreatedAt(LocalDateTime.now());
         cheque.setPriceAverage((double) totalPrice /loopCount);
+
+        if (!Objects.equals(user.getRestaurant().getId(), cheque.getMenuItems().getFirst().getRestaurant().getId())) {
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .message("FORBIDDEN")
+                    .build();
+        }
 
         chequeRepo.save(cheque);
 
@@ -146,6 +152,7 @@ public class ChequeServiceImpl implements ChequeService {
         Cheque cheque = chequeRepo.findById(id).orElseThrow(
                 () -> new NullPointerException(String.format("Cheque with id %s not found", id))
         );
+
         cheque.setUser(null);
         cheque.setMenuItems(null);
         chequeRepo.delete(cheque);

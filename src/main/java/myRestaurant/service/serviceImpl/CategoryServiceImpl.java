@@ -84,13 +84,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public SimpleResponse delete(Long id) {
+
         Category category = categoryRepo.findById(id).orElseThrow(
                 () -> new NullPointerException(String.format("Category with id %s not found", id))
         );
+
         for (SubCategory subCategory : category.getSubCategories()) {
             subCategoryRepo.deleteById(subCategory.getId());
         }
         categoryRepo.delete(category);
+
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Category deleted")

@@ -3,7 +3,6 @@ package myRestaurant.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,9 @@ public class Category {
     @SequenceGenerator(name = "category_gen", sequenceName = "category_seq", allocationSize = 1, initialValue = 1)
     Long id;
     String name;
-    @OneToMany (mappedBy = "category", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "category",
+            cascade = {CascadeType.REMOVE,
+                       CascadeType.MERGE,
+                       CascadeType.REFRESH})
     List<SubCategory> subCategories = new ArrayList<>();
 }

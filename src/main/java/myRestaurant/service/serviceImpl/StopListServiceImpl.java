@@ -1,5 +1,7 @@
 package myRestaurant.service.serviceImpl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import myRestaurant.dto.SimpleResponse;
 import myRestaurant.dto.stopListDto.request.StopListRequest;
@@ -13,6 +15,8 @@ import myRestaurant.repo.UserRepo;
 import myRestaurant.service.StopListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,7 +29,6 @@ public class StopListServiceImpl implements StopListService {
     private final UserRepo userRepo;
 //    private final SubCategoryRepo subCategoryRepo;
     private final MenuItemsRepo menuItemsRepo;
-
 
     @Override
     public SimpleResponse save(Long userId, Long menuItemId, StopListRequest stopListRequest) {
@@ -98,7 +101,20 @@ public class StopListServiceImpl implements StopListService {
     }
 
     @Override
+    @Transactional
     public SimpleResponse delete(Long id) {
-        return null;
+        StopList stopList = stopListRepo.findById(id).orElseThrow(
+                () -> new NullPointerException(String.format("StopList with id %s not found", id))
+        );
+
+        MenuItem menuItem = stopList.getMenuItem();
+        menuItem.setStopList(null);
+        stopList.setMenuItem(null);
+        stopListRepo.delete(stopList);
+
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Stop list successfully deleted")
+                .build();
     }
 }

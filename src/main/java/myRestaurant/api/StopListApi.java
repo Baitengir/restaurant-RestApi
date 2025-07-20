@@ -51,7 +51,7 @@ public class StopListApi {
 
     // ✅ Delete
     @DeleteMapping("/{id}")
-    public ResponseEntity<SimpleResponse> delete(@PathVariable Long id) {
-        return null;
+    public SimpleResponse delete(@PathVariable Long id) {
+        return stopListService.delete(id);
     }
 }

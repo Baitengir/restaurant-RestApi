@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,11 +24,12 @@ public class MenuItem {
     int price;
     String description;
     boolean isVegetarian;
-    @ManyToMany (mappedBy = "menuItems")
-    List<Cheque> cheques;
+    @ManyToMany(mappedBy = "menuItems")
+    List<Cheque> cheques = new ArrayList<>();
     @ManyToOne
     SubCategory subCategory;
-    @OneToOne (mappedBy = "menuItem")
+    @OneToOne(mappedBy = "menuItem",
+            cascade = CascadeType.REMOVE)
     StopList stopList;
     @ManyToOne
     Restaurant restaurant;

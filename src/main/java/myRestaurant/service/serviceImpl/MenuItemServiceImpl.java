@@ -6,10 +6,8 @@ import myRestaurant.dto.categoryDto.response.CategoryResponse;
 import myRestaurant.dto.menuItemDto.request.MenuItemRequest;
 import myRestaurant.dto.menuItemDto.response.MenuItemResponse;
 import myRestaurant.entities.*;
-import myRestaurant.repo.MenuItemsRepo;
-import myRestaurant.repo.RestaurantRepo;
-import myRestaurant.repo.SubCategoryRepo;
-import myRestaurant.repo.UserRepo;
+import myRestaurant.myExceptions.TestException;
+import myRestaurant.repo.*;
 import myRestaurant.service.MenuItemService;
 import myRestaurant.service.RestaurantService;
 import org.springframework.http.HttpStatus;
@@ -28,6 +26,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     private final UserRepo userRepo;
     private final RestaurantRepo restaurantRepo;
     private final SubCategoryRepo subCategoryRepo;
+    private final StopListRepo stopListRepo;
 
     @Override
     public SimpleResponse saveByRestaurantId(Long userId, Long restaurantId, Long subCategoryId, MenuItemRequest menuItemRequest) {
@@ -121,14 +120,34 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItem menuItem = menuItemsRepo.findById(id).orElseThrow(
                 () -> new NullPointerException(String.format("Menu item with id %s not found", id))
         );
-        menuItem.setRestaurant(null);
-        menuItem.setStopList(null);
-        for (Cheque cheque : menuItem.getCheques()) {
-            cheque.getMenuItems().remove(menuItem);
+
+        StopList stopList = menuItem.getStopList();
+        if (stopList != null) {
+            stopListRepo.delete(stopList);
         }
 
-//        menuItem.getCheques().clear();
+        List<Cheque> cheques = menuItem.getCheques();
+        if (cheques != null) {
+            for (Cheque cheque : cheques) {
+                cheque.getMenuItems().remove(menuItem);
+            }
+        }
+
+        Restaurant restaurant = menuItem.getRestaurant();
+        if (restaurant != null) {
+            restaurant.getMenuItems().remove(menuItem);
+            menuItem.setRestaurant(null);
+        }
+
+        try {
+            menuItemsRepo.deleteByMenuItemId(menuItem.getId());
+            menuItem.setSubCategory(null);
+        } catch (Exception e) {
+            throw new TestException("menuItem delete method, delete menuItem in the table cheques_menu_items"+e);
+        }
+
         menuItemsRepo.delete(menuItem);
+
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Menu item deleted")

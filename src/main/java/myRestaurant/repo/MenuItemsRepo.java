@@ -4,6 +4,7 @@ import myRestaurant.dto.categoryDto.response.CategoryResponse;
 import myRestaurant.dto.menuItemDto.response.MenuItemResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import myRestaurant.entities.MenuItem;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -62,5 +63,10 @@ public interface MenuItemsRepo extends JpaRepository<MenuItem, Long> {
             and m.isVegetarian = true
             """)
     public List<MenuItemResponse> getAllVegetarianFood(Long restaurantId);
+
+    @Modifying
+    @Query(value = "DELETE FROM cheques_menu_items WHERE menu_items_id = :menuItemId", nativeQuery = true)
+    void deleteByMenuItemId(@Param("menuItemId") Long menuItemId);
+
 
 }

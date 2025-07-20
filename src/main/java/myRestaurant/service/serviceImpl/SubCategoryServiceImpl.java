@@ -7,6 +7,7 @@ import myRestaurant.dto.subCategoryDto.response.SubCategoryResponse;
 import myRestaurant.entities.Category;
 import myRestaurant.entities.MenuItem;
 import myRestaurant.entities.SubCategory;
+import myRestaurant.myExceptions.TestException;
 import myRestaurant.repo.CategoryRepo;
 import myRestaurant.repo.MenuItemsRepo;
 import myRestaurant.repo.SubCategoryRepo;
@@ -77,13 +78,26 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     @Override
     @Transactional
     public SimpleResponse deleteById(Long id) {
-        SubCategory subCategory = subCategoryRepo.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "SubCategory not found")
-        );
+        SubCategory subCategory = subCategoryRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "SubCategory not found"));
 
-        for (MenuItem menuItem : subCategory.getMenuItems()) {
-            menuItemsRepo.deleteById(menuItem.getId());
+        Category category = subCategory.getCategory();
+        if (category != null) {
+            category.getSubCategories().remove(subCategory);
+            subCategory.setCategory(null);
         }
+
+        try {
+            if (subCategory.getMenuItems() != null) {
+                for (MenuItem menuItem : subCategory.getMenuItems()) {
+                    menuItemsRepo.deleteById(menuItem.getId());
+                }
+                subCategory.getMenuItems().clear();
+            }
+        } catch (Exception e) {
+            throw new TestException("subCategory delete method - "+e.getMessage());
+        }
+
         subCategoryRepo.delete(subCategory);
 
         return SimpleResponse.builder()
@@ -91,6 +105,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
                 .message("SubCategory deleted successfully")
                 .build();
     }
+
 
     @Override
     public List<SubCategoryResponse> getAllByCategoryId(Long id) {

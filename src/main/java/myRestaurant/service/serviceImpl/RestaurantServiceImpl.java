@@ -1,8 +1,13 @@
 package myRestaurant.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import myRestaurant.entities.MenuItem;
 import myRestaurant.entities.User;
+import myRestaurant.myExceptions.TestException;
+import myRestaurant.repo.MenuItemsRepo;
 import myRestaurant.repo.UserRepo;
+import myRestaurant.service.MenuItemService;
+import myRestaurant.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import myRestaurant.dto.SimpleResponse;
@@ -21,6 +26,9 @@ import java.util.List;
 public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepo restaurantRepo;
     private final UserRepo userRepo;
+    private final MenuItemsRepo menuItemsRepo;
+    private final MenuItemService menuItemService;
+    private final UserService userService;
 
     @Override
     public SimpleResponse save(RestaurantRequest restaurantRequest) {
@@ -85,9 +93,19 @@ public class RestaurantServiceImpl implements RestaurantService {
                 () -> new NullPointerException(String.format("Restaurant with id %s not found", id))
         );
 
+            restaurant.getUsers().forEach(user -> {userService.deleteById(user.getId());});
 
-        userRepo.deleteAll(restaurant.getUsers());
-        restaurant.getMenuItems().size();
+
+        try {
+            List<MenuItem> menuItems = restaurant.getMenuItems();
+            if (menuItems != null) {
+                for (MenuItem menuItem : menuItems) {
+                    menuItemService.deleteById(menuItem.getId());
+                }
+            }
+        } catch (Exception e) {
+            throw new TestException("Restaurant delete method failed, delete all menuItems"+ e.getMessage());
+        }
 
         restaurantRepo.delete(restaurant);
         return SimpleResponse.builder()

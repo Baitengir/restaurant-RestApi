@@ -40,4 +40,14 @@ public class SubCategoryApi {
                                                 @RequestBody SubCategoryRequest subCategoryRequest) {
         return subCategoryService.updateById(id, subCategoryRequest);
     }
+
+    @DeleteMapping("/{id}")
+    public SimpleResponse delete (@PathVariable Long id) {
+        return subCategoryService.deleteById(id);
+    }
+
+    @GetMapping("/byCategoryId/{id}")
+    public List<SubCategoryResponse> getAllByCategoryId (@PathVariable Long id) {
+        return subCategoryService.getAllByCategoryId(id);
+    }
 }

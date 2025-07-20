@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,6 +22,6 @@ public class SubCategory {
     String name;
     @ManyToOne
     Category category;
-    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.REMOVE)
-    List<MenuItem> menuItems;
+    @OneToMany(mappedBy = "subCategory")
+    List<MenuItem> menuItems = new ArrayList<>();
 }

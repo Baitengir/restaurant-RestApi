@@ -13,5 +13,4 @@ public interface RestaurantService {
     List<RestaurantResponse> getAllRestaurants();
     SimpleResponse updateById (Long id, RestaurantRequestUpdate restaurantRequestUpdate);
     SimpleResponse deleteById(Long id);
-    // todo 15 emp
 }
