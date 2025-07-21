@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import myRestaurant.entities.MenuItem;
 import myRestaurant.entities.User;
 import myRestaurant.myExceptions.TestException;
-import myRestaurant.repo.MenuItemsRepo;
-import myRestaurant.repo.UserRepo;
+import myRestaurant.repo.*;
 import myRestaurant.service.MenuItemService;
 import myRestaurant.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -15,11 +14,13 @@ import myRestaurant.dto.restaurantDto.request.RestaurantRequest;
 import myRestaurant.dto.restaurantDto.request.RestaurantRequestUpdate;
 import myRestaurant.dto.restaurantDto.response.RestaurantResponse;
 import myRestaurant.entities.Restaurant;
-import myRestaurant.repo.RestaurantRepo;
 import myRestaurant.service.RestaurantService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final MenuItemsRepo menuItemsRepo;
     private final MenuItemService menuItemService;
     private final UserService userService;
+    private final SubCategoryRepo subCategoryRepo;
+    private final CategoryRepo categoryRepo;
 
     @Override
     public SimpleResponse save(RestaurantRequest restaurantRequest) {
@@ -93,18 +96,24 @@ public class RestaurantServiceImpl implements RestaurantService {
                 () -> new NullPointerException(String.format("Restaurant with id %s not found", id))
         );
 
-            restaurant.getUsers().forEach(user -> {userService.deleteById(user.getId());});
-
+        new ArrayList<>(restaurant.getUsers()).forEach(user -> userService.deleteById(user.getId()));
 
         try {
-            List<MenuItem> menuItems = restaurant.getMenuItems();
-            if (menuItems != null) {
-                for (MenuItem menuItem : menuItems) {
-                    menuItemService.deleteById(menuItem.getId());
-                }
+            List<MenuItem> menuItems = new ArrayList<>(restaurant.getMenuItems());
+            Set<Long> subCategoryIds = new HashSet<>();
+            Set<Long> categoryIds = new HashSet<>();
+
+            for (MenuItem menuItem : menuItems) {
+                subCategoryIds.add(menuItem.getSubCategory().getId());
+                categoryIds.add(menuItem.getSubCategory().getCategory().getId());
+                menuItemService.deleteById(menuItem.getId());
             }
+
+            subCategoryIds.forEach(subCategoryRepo::deleteById);
+            categoryIds.forEach(categoryRepo::deleteById);
+
         } catch (Exception e) {
-            throw new TestException("Restaurant delete method failed, delete all menuItems"+ e.getMessage());
+            throw new TestException("Restaurant delete method failed: " + e.getMessage());
         }
 
         restaurantRepo.delete(restaurant);
@@ -113,4 +122,5 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .message("Restaurant deleted")
                 .build();
     }
+
 }

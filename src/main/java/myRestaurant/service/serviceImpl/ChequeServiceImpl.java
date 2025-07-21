@@ -70,7 +70,7 @@ public class ChequeServiceImpl implements ChequeService {
         if (!Objects.equals(user.getRestaurant().getId(), cheque.getMenuItems().getFirst().getRestaurant().getId())) {
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
-                    .message("FORBIDDEN")
+                    .message("Данные указаны не правильно, официан и меню из разных ресторанов")
                     .build();
         }
 

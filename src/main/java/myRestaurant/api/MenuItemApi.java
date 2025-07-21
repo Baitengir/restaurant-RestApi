@@ -2,7 +2,6 @@ package myRestaurant.api;
 
 import lombok.RequiredArgsConstructor;
 import myRestaurant.dto.SimpleResponse;
-import myRestaurant.dto.categoryDto.response.CategoryResponse;
 import myRestaurant.dto.menuItemDto.request.MenuItemRequest;
 import myRestaurant.dto.menuItemDto.response.MenuItemResponse;
 import myRestaurant.service.MenuItemService;
@@ -17,7 +16,7 @@ import java.util.List;
 public class MenuItemApi {
     private final MenuItemService menuItemService;
 
-    @PostMapping()
+    @PostMapping
     public SimpleResponse saveByRestaurantId(@RequestParam Long userId,
                                              @RequestParam Long restaurantId,
                                              @RequestParam Long subCategoryId,

@@ -27,6 +27,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SimpleResponse save(Long userId, UserRequest userRequest, Long restaurantId) {
+
+//        email уникальный болуш керек
+//        Повардын жашы 25 тен 45 жашка чейин болсун
+//        Официанттын жашы 18 ден 30 жашка чейин болсун
+//        Иштоо стаждары официанттыкы 1 жыл, повардыкы 2 жыл болсун
+//        Телефон номерлерде валидация болсун
+//        Password 4 символдон коп болсун
+//        Полелер null болбосун
+
         User requestOwner = userRepo.findById(userId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
         );

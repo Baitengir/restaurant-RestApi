@@ -64,6 +64,13 @@ public class MenuItemServiceImpl implements MenuItemService {
                 () -> new NullPointerException(String.format("SubCategory with id %s not found", subCategoryId))
         );
 
+        if (!subCategory.getMenuItems().isEmpty()){
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .message("subCategory already exist the MenuItem")
+                    .build();
+        }
+
         menuItem.setRestaurant(restaurant);
         restaurant.getMenuItems().add(menuItem);
         menuItem.setSubCategory(subCategory);
