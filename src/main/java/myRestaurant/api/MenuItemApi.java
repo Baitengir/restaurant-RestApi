@@ -7,7 +7,6 @@ import myRestaurant.dto.menuItemDto.response.MenuItemResponse;
 import myRestaurant.service.MenuItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RequestMapping("api/menuItems")
