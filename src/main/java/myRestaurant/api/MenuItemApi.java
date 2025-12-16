@@ -46,26 +46,30 @@ public class MenuItemApi {
     }
 
     @DeleteMapping("/{id}")
-    public SimpleResponse delete (@PathVariable Long id) {
+    public SimpleResponse delete (@PathVariable Long id)
+    {
         return menuItemService.deleteById(id);
     }
 
     // 🔍 1. Global Search (поиск по имени)
     @GetMapping("/search")
-    public List<MenuItemResponse> globalSearch(@RequestParam String keyword) {
+    public List<MenuItemResponse> globalSearch(@RequestParam String keyword)
+    {
         return menuItemService.globalSearch(keyword);
     }
 
     // 🔼🔽 2. Сортировка по цене
     @GetMapping("/sort")
     public List<MenuItemResponse> sortByPrice(@RequestParam Long restaurantId,
-                                              @RequestParam(defaultValue = "asc") String ascOrDesc) {
+                                              @RequestParam(defaultValue = "asc") String ascOrDesc)
+    {
         return menuItemService.sortByPrice(restaurantId, ascOrDesc);
     }
 
     // 🥦 3. Только вегетарианские блюда
     @GetMapping("/vegetarian")
-    public List<MenuItemResponse> getAllVegetarianFood(@RequestParam Long restaurantId) {
+    public List<MenuItemResponse> getAllVegetarianFood(@RequestParam Long restaurantId)
+    {
         return menuItemService.getAllVegetarianFood(restaurantId);
     }
 }
